@@ -1,0 +1,4 @@
+---
+
+- name: Install logstash
+  pkgng: name=logstash state=present

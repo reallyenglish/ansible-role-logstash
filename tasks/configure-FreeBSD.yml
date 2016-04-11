@@ -1,0 +1,8 @@
+---
+
+- name: Create rc.d flags
+  template:
+    src: FreeBSD.rc.d.j2
+    dest: /etc/rc.conf.d/logstash
+    mode: 0644
+  notify: Restart logstash

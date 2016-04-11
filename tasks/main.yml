@@ -1,0 +1,18 @@
+---
+# tasks file for ansible-role-logstash
+
+- include_vars: "{{ ansible_os_family }}.yml"
+
+- include: install-FreeBSD.yml
+  when: ansible_os_family == 'FreeBSD'
+
+- include: configure-FreeBSD.yml
+  when: ansible_os_family == 'FreeBSD'
+
+- name: Configure logstash/conf.d
+  file:
+    path: "{{ logstash_conf_dir }}"
+    state: directory
+
+- name: Ensure logstash is running
+  service: name="logstash" state="started" enabled="yes"
