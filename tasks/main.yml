@@ -15,4 +15,7 @@
     state: directory
 
 - name: Ensure logstash is running
-  service: name="logstash" state="started" enabled="yes"
+  service:
+    name: "{{ logstash_service_name }}"
+    state: started
+    enabled: yes
