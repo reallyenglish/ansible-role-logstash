@@ -14,8 +14,27 @@
     path: "{{ logstash_conf_dir }}"
     state: directory
 
+- name: Create logstash configuration files
+  template:
+    src: "{{ item }}.j2"
+    dest: "{{ logstash_conf_dir }}/{{ item }}"
+    mode: 0644
+  with_items:
+    - input.conf
+    - filter.conf
+    - output.conf
+  notify: Restart logstash
+
 - name: Ensure logstash is running
   service:
     name: "{{ logstash_service_name }}"
     state: started
     enabled: yes
+
+# TODO
+# * --allow-unsafe-shutdown
+# * install visualvm? https://www.elastic.co/guide/en/logstash/current/pipeline.html
+# * logstash 2.3 (auto-reload)
+# * reload by sending SIGHUP
+# * Managing Throughput Spikes with Message Queueing
+# * Managing plugins

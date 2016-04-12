@@ -7,6 +7,9 @@ logstash_config_path  = '/etc/logstash/conf.d'
 logstash_user_name    = 'logstash'
 logstash_user_group   = 'logstash'
 
+# wait for logstash to start listening
+sleep 15
+
 case os[:family]
 when 'freebsd'
   logstash_config_path = '/usr/local/etc/logstash/conf.d'
@@ -31,4 +34,8 @@ end
 describe service(logstash_service_name) do
   it { should be_enabled }
   it { should be_running }
+end
+
+describe port(5140) do
+  it { should be_listening }
 end
