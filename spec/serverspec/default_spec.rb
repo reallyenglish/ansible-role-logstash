@@ -39,3 +39,8 @@ end
 describe port(5140) do
   it { should be_listening }
 end
+
+describe file("#{logstash_config_path}/filter.conf") do
+  it { should be_file }
+  its(:content) { should_not match %r{None} }
+end
