@@ -6,6 +6,7 @@ logstash_service_name = 'logstash'
 logstash_config_path  = '/etc/logstash/conf.d'
 logstash_user_name    = 'logstash'
 logstash_user_group   = 'logstash'
+logstash_local_log    = '/var/log/logstash.log'
 
 # wait for logstash to start listening
 sleep 15
@@ -44,4 +45,8 @@ end
 describe file("#{logstash_config_path}/filter.conf") do
   it { should be_file }
   its(:content) { should_not match %r{None} }
+end
+
+describe file(logstash_local_log) do
+  it { should be_file }
 end
