@@ -19,6 +19,7 @@ Role Variables
 | logstash\_inputs        | configurations for input plugins            | "" |
 | logstash\_outputs       | configurations for output plugins           | "" |
 | logstash\_filters       | configurations for filter plugins           | "" |
+| logstash\_enable\_log   | enable logging to local file                | "" |
 
 
 Dependencies

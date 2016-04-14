@@ -1,2 +1,5 @@
 logstash_config="{{ logstash_conf_dir }}"
 logstash_java_opts="{{ logstash_java_opts }}"
+{% if logstash_enable_log == True -%}
+logstash_log=YES
+{% endif -%}

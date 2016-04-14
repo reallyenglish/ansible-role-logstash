@@ -2,6 +2,7 @@
   roles:
     - ansible-role-logstash
   vars:
+    logstash_enable_log: true
     logstash_inputs: |
       tcp {
         'port' => '5140'
