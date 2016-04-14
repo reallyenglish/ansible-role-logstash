@@ -19,7 +19,7 @@ Role Variables
 | logstash\_inputs        | configurations for input plugins            | "" |
 | logstash\_outputs       | configurations for output plugins           | "" |
 | logstash\_filters       | configurations for filter plugins           | "" |
-| logstash\_enable\_log   | enable logging to local file                | "" |
+| logstash\_enable\_log   | enable logging to local file. note that you need to configure log rotation yourself | true |
 
 
 Dependencies
