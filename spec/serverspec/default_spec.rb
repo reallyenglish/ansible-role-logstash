@@ -7,6 +7,7 @@ logstash_config_path  = '/etc/logstash/conf.d'
 logstash_user_name    = 'logstash'
 logstash_user_group   = 'logstash'
 logstash_local_log    = '/var/log/logstash.log'
+logstash_home         = '/usr/local/logstash'
 
 # wait for logstash to start listening
 sleep 15
@@ -49,4 +50,9 @@ end
 
 describe file(logstash_local_log) do
   it { should be_file }
+end
+
+describe file("#{logstash_home}/bin/plugin") do
+  it { should be_file }
+  it { should be_mode 755 }
 end
