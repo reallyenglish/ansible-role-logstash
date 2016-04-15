@@ -5,6 +5,8 @@ logstash_conf_dir: "{{ __logstash_etc_dir }}/conf.d"
 logstash_service_name: logstash
 logstash_java_opts:
 logstash_enable_log: true
+logstash_plugins_to_install: []
+logstash_home: "{{ __logstash_home }}"
 # example: logstash_java_opts: "-Xmx512m -Xms128m"
 
 logstash_inputs:

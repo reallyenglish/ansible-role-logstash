@@ -10,3 +10,5 @@
       }
     logstash_outputs: |
       elasticsearch {}
+    logstash_plugins_to_install:
+      - logstash-input-rss

@@ -56,3 +56,8 @@ describe file("#{logstash_home}/bin/plugin") do
   it { should be_file }
   it { should be_mode 755 }
 end
+
+describe command("#{ logstash_home }/bin/plugin list") do
+  its(:exit_status) { should eq 0 }
+  its(:stdout) { should match /logstash-input-rss/ }
+end

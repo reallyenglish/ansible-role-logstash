@@ -9,6 +9,12 @@
 - include: configure-FreeBSD.yml
   when: ansible_os_family == 'FreeBSD'
 
+- name: Install plugins
+  command: "{{ logstash_home }}/bin/plugin install {{ item }}"
+# ansible 2.x support grob in creates
+# creates: "{{ logstash_home }}/vendor/bundle/jruby/*/gems/{{ item }}-*
+  with_items: "{{ logstash_plugins_to_install }}"
+
 - name: Configure logstash/conf.d
   file:
     path: "{{ logstash_conf_dir }}"
