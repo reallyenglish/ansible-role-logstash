@@ -1,15 +1,12 @@
-ansible-role-logstash
-=====================
+# ansible-role-logstash
 
-Installs logstash
+Configures logstash.
 
-Requirements
-------------
+# Requirements
 
 None
 
-Role Variables
---------------
+# Role Variables
 
 | Name | Description | Default |
 |------|-------------|---------|
@@ -24,13 +21,11 @@ Role Variables
 | logstash\_plugins\_to\_install   | logstash plugins to install | [] |
 
 
-Dependencies
-------------
+# Dependencies
 
 None
 
-Example Playbook
-----------------
+# Example Playbook
 
     - hosts: servers
       roles:
@@ -43,12 +38,10 @@ Example Playbook
           logstash_outputs: |
             elasticsearch {}
 
-License
--------
+# License
 
 BSD
 
-Author Information
-------------------
+# Author Information
 
 Tomoyuki Sakurai <tomoyukis@reallyenglish.com>
