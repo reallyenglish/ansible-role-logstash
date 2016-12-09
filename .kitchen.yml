@@ -1,6 +1,8 @@
 ---
 driver:
   name: vagrant
+  customize:
+    memory: 1024
 
 transport:
   name: rsync
@@ -32,6 +34,11 @@ platforms:
     provisioner:
       extra_vars:
         ansible_python_interpreter: '/usr/local/bin/python'
+
+  - name: ubuntu-14.04-amd64
+    driver:
+      box: trombik/ansible-ubuntu-14.04-amd64
+      box_check_update: false
 
 suites:
   - name: default
