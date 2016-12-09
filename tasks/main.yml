@@ -17,7 +17,7 @@
 - name: Install plugins
   command: "{{ logstash_home }}/bin/plugin install {{ item }}"
   with_items: "{{ logstash_plugins_to_install }}"
-  when: not ( gem_list.stdout | search(item) )
+  when: not ( logstash_plugins_list.stdout | search(item) )
 
 - name: Configure logstash/conf.d
   file:
