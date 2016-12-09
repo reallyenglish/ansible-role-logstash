@@ -1,10 +1,12 @@
 ---
 
 - name: Install logstash
-  pkgng: name=logstash state=present
+  pkgng:
+    name: logstash
+    state: present
 
 # package logstash-2.1.0 does not set exec bit
-- name: fix permission on bin/plugin
+- name: Make plugin executable
   file:
     path: /usr/local/logstash/bin/plugin
     mode: 0755
