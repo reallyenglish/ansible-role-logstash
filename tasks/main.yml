@@ -3,19 +3,17 @@
 
 - include_vars: "{{ ansible_os_family }}.yml"
 
-- include: install-FreeBSD.yml
-  when: ansible_os_family == 'FreeBSD'
+- include: "install-{{ ansible_os_family }}.yml"
 
-- include: configure-FreeBSD.yml
-  when: ansible_os_family == 'FreeBSD'
+- include: "configure-{{ ansible_os_family }}.yml"
 
 - name: Register installed plugins
-  command: "{{ logstash_home }}/bin/plugin list"
+  command: "{{ logstash_home }}/bin/logstash-plugin list"
   register: logstash_plugins_list
   changed_when: False
 
 - name: Install plugins
-  command: "{{ logstash_home }}/bin/plugin install {{ item }}"
+  command: "{{ logstash_home }}/bin/logstash-plugin install {{ item }}"
   with_items: "{{ logstash_plugins_to_install }}"
   when: not ( logstash_plugins_list.stdout | search(item) )
 
