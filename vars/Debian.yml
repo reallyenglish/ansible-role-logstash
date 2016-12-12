@@ -1,0 +1,3 @@
+---
+__logstash_etc_dir: /etc/logstash
+__logstash_home: /usr/share/logstash

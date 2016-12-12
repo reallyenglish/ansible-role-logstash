@@ -6,8 +6,8 @@ logstash_service_name = 'logstash'
 logstash_config_path  = '/etc/logstash/conf.d'
 logstash_user_name    = 'logstash'
 logstash_user_group   = 'logstash'
-logstash_local_log    = '/var/log/logstash.log'
-logstash_home         = '/usr/local/logstash'
+logstash_home         = '/usr/share/logstash'
+logstash_local_log   = "/var/log/logstash/logstash-plain.log"
 
 # wait for logstash to start listening
 sleep 15
@@ -15,6 +15,8 @@ sleep 15
 case os[:family]
 when 'freebsd'
   logstash_config_path = '/usr/local/etc/logstash/conf.d'
+  logstash_home        = '/usr/local/logstash'
+  logstash_local_log   = '/var/log/logstash.log'
 end
 
 describe package(logstash_package_name) do
@@ -52,12 +54,12 @@ describe file(logstash_local_log) do
   it { should be_file }
 end
 
-describe file("#{logstash_home}/bin/plugin") do
+describe file("#{logstash_home}/bin/logstash-plugin") do
   it { should be_file }
   it { should be_mode 755 }
 end
 
-describe command("#{ logstash_home }/bin/plugin list") do
+describe command("#{ logstash_home }/bin/logstash-plugin list") do
   its(:exit_status) { should eq 0 }
   its(:stdout) { should match /logstash-input-rss/ }
 end

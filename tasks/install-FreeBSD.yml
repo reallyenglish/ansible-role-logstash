@@ -10,3 +10,8 @@
   file:
     path: /usr/local/logstash/bin/plugin
     mode: 0755
+
+- name: Make logstash-plugin executable
+  file:
+    path: /usr/local/logstash/bin/logstash-plugin
+    mode: 0755
