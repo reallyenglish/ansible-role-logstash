@@ -11,6 +11,7 @@ None
 | Name | Description | Default |
 |------|-------------|---------|
 | logstash\_conf\_dir     | the directory all logstash configs reside   | {{ \_\_logstash\_etc\_dir }}/conf.d |
+| `logstash_package_name` | package name of logstash | `{{ __logstash_package_name }}` |
 | logstash\_service\_name | the service name of logstash                | logstash |
 | logstash\_java\_opts    | options for Java                            | "" |
 | logstash\_inputs        | configurations for input plugins            | "" |

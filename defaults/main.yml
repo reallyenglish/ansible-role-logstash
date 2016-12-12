@@ -2,6 +2,7 @@
 # defaults file for ansible-role-logstash
 
 logstash_conf_dir: "{{ __logstash_etc_dir }}/conf.d"
+logstash_package_name: "{{ __logstash_package_name }}"
 logstash_service_name: logstash
 logstash_java_opts:
 logstash_enable_log: true

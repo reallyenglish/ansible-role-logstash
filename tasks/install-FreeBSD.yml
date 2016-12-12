@@ -2,7 +2,7 @@
 
 - name: Install logstash
   pkgng:
-    name: logstash
+    name: "{{ logstash_package_name }}"
     state: present
 
 # package logstash-2.1.0 does not set exec bit

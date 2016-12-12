@@ -38,7 +38,7 @@
 
 - name: Install logstash
   apt:
-    name: logstash
+    name: "{{ logstash_package_name }}"
     state: present
 
 # package logstash 5.1.1 installs logstash-plugin with permission 0775
