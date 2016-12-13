@@ -18,6 +18,8 @@
   when: not ( logstash_plugins_list.stdout | search(item) )
   environment:
     DEBUG: 1
+    JARS_DEBUG: true
+    JARS_VERBOSE: true
 
 - name: Configure logstash/conf.d
   file:
