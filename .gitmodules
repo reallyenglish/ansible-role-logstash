@@ -1,0 +1,3 @@
+[submodule "extra_roles/reallyenglish.freebsd-repos"]
+	path = extra_roles/reallyenglish.freebsd-repos
+	url = https://github.com/reallyenglish/ansible-role-freebsd-repos.git

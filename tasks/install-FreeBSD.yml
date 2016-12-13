@@ -5,12 +5,7 @@
     name: "{{ logstash_package_name }}"
     state: present
 
-# package logstash-2.1.0 does not set exec bit
-- name: Make plugin executable
-  file:
-    path: /usr/local/logstash/bin/plugin
-    mode: 0755
-
+# package logstash-5.0.2 still does not set exec bit
 - name: Make logstash-plugin executable
   file:
     path: /usr/local/logstash/bin/logstash-plugin
