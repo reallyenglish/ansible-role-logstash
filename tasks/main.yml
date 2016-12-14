@@ -16,10 +16,6 @@
   command: "{{ logstash_home }}/bin/logstash-plugin install {{ item }}"
   with_items: "{{ logstash_plugins_to_install }}"
   when: not ( logstash_plugins_list.stdout | search(item) )
-  environment:
-    DEBUG: 1
-    JARS_DEBUG: true
-    JARS_VERBOSE: true
 
 - name: Configure logstash/conf.d
   file:

@@ -5,12 +5,25 @@
     name: "{{ logstash_package_name }}"
     state: present
 
-# package logstash-5.0.2 still does not set exec bit
-- name: Make logstash-plugin executable
-  file:
-    path: /usr/local/logstash/bin/logstash-plugin
-    mode: 0755
+- name: Mount fdesc for Java
+  # TODO this should be performed by a role for Java
+  # Create ansible-role-java, probably by forking an existing role
+  mount:
+    name: /dev/fd
+    src: fdesc
+    fstype: fdescfs
+    opts: rw
+    state: mounted
 
+- name: Mount fdesc for Java
+  mount:
+    name: /proc
+    src: proc
+    fstype: procfs
+    opts: rw
+    state: mounted
+
+# package logstash-5.0.2 still does not set exec bit
 - name: Make logstash-plugin executable
   file:
     path: /usr/local/logstash/bin/logstash-plugin

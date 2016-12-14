@@ -16,7 +16,27 @@ case os[:family]
 when 'freebsd'
   logstash_config_path = '/usr/local/etc/logstash/conf.d'
   logstash_home        = '/usr/local/logstash'
-  logstash_local_log   = '/var/log/logstash.log'
+end
+
+case os[:family]
+when "freebsd"
+  describe file("/dev/fd") do
+    it { should be_mounted }
+    # XXX in lib/specinfra/processor.rb, line 93, sepcinfra 2.66.2 has
+    # linuxism, expecting:
+    #
+    # proc on /proc type proc (rw,noexec,nosuid,nodev)
+    #
+    # but in FeeeBSD, mount(8) returns:
+    #
+    # procfs on /proc (procfs, local)
+    #
+    # it { should be_mounted.with(:type => "fdescfs") }
+  end
+end
+describe file("/proc") do
+  it { should be_mounted }
+  # it { should be_mounted.with(:type => "procfs") }
 end
 
 describe package(logstash_package_name) do
