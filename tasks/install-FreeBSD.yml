@@ -15,7 +15,7 @@
     opts: rw
     state: mounted
 
-- name: Mount fdesc for Java
+- name: Mount procfs for Java
   mount:
     name: /proc
     src: proc
