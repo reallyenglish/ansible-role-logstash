@@ -4,6 +4,7 @@ require 'serverspec'
 logstash_package_name = 'logstash'
 logstash_service_name = 'logstash'
 logstash_config_path  = '/etc/logstash/conf.d'
+logstash_config       = "/etc/logstash/logstash.yml"
 logstash_user_name    = 'logstash'
 logstash_user_group   = 'logstash'
 logstash_home         = '/usr/share/logstash'
@@ -14,8 +15,10 @@ sleep 15
 
 case os[:family]
 when 'freebsd'
+  logstash_package_name = "logstash5"
   logstash_config_path = '/usr/local/etc/logstash/conf.d'
   logstash_home        = '/usr/local/logstash'
+  logstash_config      = "/usr/local/etc/logstash/logstash.yml"
 end
 
 case os[:family]
@@ -82,4 +85,9 @@ end
 describe command("#{ logstash_home }/bin/logstash-plugin list") do
   its(:exit_status) { should eq 0 }
   its(:stdout) { should match /logstash-input-rss/ }
+end
+
+describe file(logstash_config) do
+  it { should be_file }
+  its(:content_as_yaml) { should include("path.logs" => "/var/log/logstash") }
 end

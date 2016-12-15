@@ -11,9 +11,13 @@
   command: "{{ logstash_home }}/bin/logstash-plugin list"
   register: logstash_plugins_list
   changed_when: False
+  become: true
+  become_user: "{{ logstash_user }}"
 
 - name: Install plugins
   command: "{{ logstash_home }}/bin/logstash-plugin install {{ item }}"
+  become: true
+  become_user: "{{ logstash_user }}"
   with_items: "{{ logstash_plugins_to_install }}"
   when: not ( logstash_plugins_list.stdout | search(item) )
 
@@ -21,6 +25,31 @@
   file:
     path: "{{ logstash_conf_dir }}"
     state: directory
+
+- name: Create logstash.yml
+  template:
+    src: logstash.yml.j2
+    dest: "{{ logstash_etc_dir }}/logstash.yml"
+
+- name: Create path.logs directory
+  file:
+    path: "{{ logstash_config.path.logs }}"
+    state: directory
+    owner: "{{ logstash_user }}"
+    group: "{{ logstash_group }}"
+  when:
+    - "'path' in logstash_config"
+    - "'logs' in logstash_config.path"
+
+- name: Create path.data directory
+  file:
+    path: "{{ logstash_config.path.data }}"
+    state: directory
+    owner: "{{ logstash_user }}"
+    group: "{{ logstash_group }}"
+  when:
+    - "'path' in logstash_config"
+    - "'data' in logstash_config.path"
 
 - name: Create logstash configuration files
   template:
