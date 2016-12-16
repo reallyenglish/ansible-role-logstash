@@ -9,4 +9,4 @@
     enabled: yes
 
 - name: Reload logstash
-  shell: "kill -HUP `jps -ml | grep -E 'org\.jruby\.Main\s.*logstash\/runner\.rb ' | cut -f1 -d' '`"
+  shell: 'kill -HUP `jps -ml | grep -E "org\.jruby\.Main\s.*logstash\/runner\.rb " | cut -f1 -d" "`'
