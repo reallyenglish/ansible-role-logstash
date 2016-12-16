@@ -7,6 +7,9 @@
 
 - include: "configure-{{ ansible_os_family }}.yml"
 
+- set_fact:
+    logstash_config_merged: "{{ logstash_config_default | combine(logstash_config) }}"
+
 - name: Register installed plugins
   command: "{{ logstash_home }}/bin/logstash-plugin list"
   register: logstash_plugins_list
@@ -35,21 +38,21 @@
 
 - name: Create path.logs directory
   file:
-    path: "{{ logstash_config['path.logs'] }}"
+    path: "{{ logstash_config_merged['path.logs'] }}"
     state: directory
     owner: "{{ logstash_user }}"
     group: "{{ logstash_group }}"
   when:
-    - "'path.log' in logstash_config"
+    - "'path.log' in logstash_config_merged"
 
 - name: Create path.data directory
   file:
-    path: "{{ logstash_config['path.data'] }}"
+    path: "{{ logstash_config_merged['path.data'] }}"
     state: directory
     owner: "{{ logstash_user }}"
     group: "{{ logstash_group }}"
   when:
-    - "'path.data' in logstash_config"
+    - "'path.data' in logstash_config_merged"
 
 - name: Create logstash configuration files
   template:
@@ -62,9 +65,6 @@
     - filter.conf
     - output.conf
   notify: Reload logstash
-
-- set_fact:
-    logstash_config_merged: "{{ logstash_config_default | combine(logstash_config) }}"
 
 - name: Validate configuration files
   command: "{{ logstash_home }}/bin/logstash --config.test_and_exit --path.settings {{ logstash_etc_dir }} --path.config {{ logstash_config_merged['path.config'] }}"
