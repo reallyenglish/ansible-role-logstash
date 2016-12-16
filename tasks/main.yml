@@ -71,6 +71,8 @@
   # XXX the error message does not show up in stderr when logging to file is
   # enabled, which is almost always true. you have to dig in to the log file to
   # see what the error was.
+  become: true
+  become_user: "{{ logstash_user }}"
   when:
     - register_logstash_yml.changed or register_config_files.changed
 
