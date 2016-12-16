@@ -85,11 +85,3 @@
     host: "{{ logstash_api_host }}"
     port: "{{ logstash_api_port }}"
   when: logstash_api_enabled
-
-# TODO
-# * --allow-unsafe-shutdown
-# * install visualvm? https://www.elastic.co/guide/en/logstash/current/pipeline.html
-# * logstash 2.3 (auto-reload)
-# * reload by sending SIGHUP
-# * Managing Throughput Spikes with Message Queueing
-# * Managing plugins
