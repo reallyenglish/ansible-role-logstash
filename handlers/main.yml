@@ -2,7 +2,11 @@
 # handlers file for ansible-role-logstash
 
 - name: Restart logstash
+  # notify this handler only when full restart is required
   service:
     name: "{{ logstash_service_name }}"
     state: restarted
     enabled: yes
+
+- name: Reload logstash
+  shell: "kill -HUP `jps -ml | grep -E 'org\.jruby\.Main\s.*logstash\/runner\.rb ' | cut -f1 -d' '`"

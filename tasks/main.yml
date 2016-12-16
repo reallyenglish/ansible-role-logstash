@@ -31,7 +31,7 @@
     src: logstash.yml.j2
     dest: "{{ logstash_etc_dir }}/logstash.yml"
   register: register_logstash_yml
-  notify: Restart logstash
+  notify: Reload logstash
 
 - name: Create path.logs directory
   file:
@@ -61,7 +61,7 @@
     - input.conf
     - filter.conf
     - output.conf
-  notify: Restart logstash
+  notify: Reload logstash
 
 - set_fact:
     logstash_config_merged: "{{ logstash_config_default | combine(logstash_config) }}"
