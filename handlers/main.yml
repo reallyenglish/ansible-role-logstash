@@ -7,6 +7,14 @@
     name: "{{ logstash_service_name }}"
     state: restarted
     enabled: yes
+  notify: Wait for logstash to start
+
+- name: Wait for logstash to start
+  wait_for:
+    host: "{{ logstash_api_host }}"
+    port: "{{ logstash_api_port }}"
+  when: logstash_api_enabled
+
 
 - name: Reload logstash
   # notify this handler when configuration files has been changed.
