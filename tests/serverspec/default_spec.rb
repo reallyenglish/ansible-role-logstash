@@ -90,4 +90,6 @@ end
 describe file(logstash_config) do
   it { should be_file }
   its(:content_as_yaml) { should include("path.logs" => "/var/log/logstash") }
+  its(:content_as_yaml) { should include("http.host" => "127.0.0.1") }
+  its(:content_as_yaml) { should include("http.port" => "9700") }
 end

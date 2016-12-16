@@ -30,6 +30,7 @@
   template:
     src: logstash.yml.j2
     dest: "{{ logstash_etc_dir }}/logstash.yml"
+  notify: Restart logstash
 
 - name: Create path.logs directory
   file:
@@ -38,8 +39,7 @@
     owner: "{{ logstash_user }}"
     group: "{{ logstash_group }}"
   when:
-    - "'path' in logstash_config"
-    - "'logs' in logstash_config.path"
+    - "'path.log' in logstash_config"
 
 - name: Create path.data directory
   file:
@@ -48,8 +48,7 @@
     owner: "{{ logstash_user }}"
     group: "{{ logstash_group }}"
   when:
-    - "'path' in logstash_config"
-    - "'data' in logstash_config.path"
+    - "'path.data' in logstash_config"
 
 - name: Create logstash configuration files
   template:
@@ -67,6 +66,12 @@
     name: "{{ logstash_service_name }}"
     state: started
     enabled: yes
+
+- name: Wait for logstash to start listening to API requests
+  wait_for:
+    host: "{{ logstash_api_host }}"
+    port: "{{ logstash_api_port }}"
+  when: logstash_api_enabled
 
 # TODO
 # * --allow-unsafe-shutdown
