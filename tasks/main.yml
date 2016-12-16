@@ -43,7 +43,7 @@
     owner: "{{ logstash_user }}"
     group: "{{ logstash_group }}"
   when:
-    - "'path.log' in logstash_config_merged"
+    - "'path.logs' in logstash_config_merged"
 
 - name: Create path.data directory
   file:
