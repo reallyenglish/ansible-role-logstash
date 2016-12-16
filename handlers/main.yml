@@ -7,6 +7,27 @@
     name: "{{ logstash_service_name }}"
     state: restarted
     enabled: yes
+  # XXX need to notify "Wait" because:
+  #
+  # * the rc script "stop" and "start" the daemon
+  # * when the daemon starts, but the signal handler to catch HUP has not been
+  #   registered, HUP signal terminates the daemon
+  #
+  # this happens when initially the daemon is configured:
+  #
+  # * everything for the daemon are configured
+  # * the daemon starts
+  # * a handler to restart the daemon is called
+  # * the rc script stops and starts the daemon
+  # * and a handler to reload the daemon is called, sending HUP
+  # * the daemon has not registered the handler for HUP
+  # * the daemon receives HUP
+  # * the daemon terminates and does not start
+  # 
+  # this causes idempotency_test to fail.
+  #
+  # the real solution is for the rc script to wait for the daemon to start and
+  # returns, i.e. wait for the daemon to listen the port.
   notify: Wait for logstash to start
 
 - name: Wait for logstash to start
