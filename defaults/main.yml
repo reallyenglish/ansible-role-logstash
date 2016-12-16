@@ -13,7 +13,7 @@ logstash_plugins_to_install: []
 logstash_home: "{{ __logstash_home }}"
 logstash_api_enabled: true
 logstash_api_host: 127.0.0.1
-logstash_api_port: 9700
+logstash_api_port: 9600
 # example: logstash_java_opts: "-Xmx512m -Xms128m"
 
 logstash_config_default:
