@@ -35,7 +35,7 @@
 
 - name: Create path.logs directory
   file:
-    path: "{{ logstash_config.path.logs }}"
+    path: "{{ logstash_config['path.logs'] }}"
     state: directory
     owner: "{{ logstash_user }}"
     group: "{{ logstash_group }}"
@@ -44,7 +44,7 @@
 
 - name: Create path.data directory
   file:
-    path: "{{ logstash_config.path.data }}"
+    path: "{{ logstash_config['path.data'] }}"
     state: directory
     owner: "{{ logstash_user }}"
     group: "{{ logstash_group }}"
