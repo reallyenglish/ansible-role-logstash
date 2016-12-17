@@ -8,7 +8,8 @@ logstash_config       = "/etc/logstash/logstash.yml"
 logstash_user_name    = 'logstash'
 logstash_user_group   = 'logstash'
 logstash_home         = '/usr/share/logstash'
-logstash_local_log   = "/var/log/logstash/logstash-plain.log"
+logstash_local_log    = "/var/log/logstash/logstash-plain.log"
+jvm_options           = "/etc/logstash/jvm.options"
 
 # wait for logstash to start listening
 sleep 15
@@ -19,6 +20,7 @@ when 'freebsd'
   logstash_config_path = '/usr/local/etc/logstash/conf.d'
   logstash_home        = '/usr/local/logstash'
   logstash_config      = "/usr/local/etc/logstash/logstash.yml"
+  jvm_options          = "/usr/local/etc/logstash/jvm.options"
 end
 
 case os[:family]
@@ -92,4 +94,20 @@ describe file(logstash_config) do
   its(:content_as_yaml) { should include("path.logs" => "/var/log/logstash") }
   its(:content_as_yaml) { should include("http.host" => "127.0.0.1") }
   its(:content_as_yaml) { should include("http.port" => 9600) }
+end
+
+describe file(jvm_options) do
+  it { should be_file }
+  # non-defaults
+  its(:content) { should match(/^-Xms257m$/) }
+  # defaults
+  its(:content) { should match(/^-Xmx1g$/) }
+  its(:content) { should match(/^-XX:\+UseParNewGC$/) }
+  its(:content) { should match(/^-XX:\+UseConcMarkSweepGC$/) }
+  its(:content) { should match(/^-XX:CMSInitiatingOccupancyFraction=75$/) }
+  its(:content) { should match(/^-XX:\+UseCMSInitiatingOccupancyOnly$/) }
+  its(:content) { should match(/^-XX:\+DisableExplicitGC$/) }
+  its(:content) { should match(/^-Djava\.awt\.headless=true$/) }
+  its(:content) { should match(/^-Dfile\.encoding=UTF-8$/) }
+  its(:content) { should match(/^-XX:\+HeapDumpOnOutOfMemoryError$/) }
 end

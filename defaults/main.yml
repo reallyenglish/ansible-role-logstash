@@ -7,14 +7,24 @@ logstash_etc_dir: "{{ __logstash_etc_dir }}"
 logstash_conf_dir: "{{ __logstash_etc_dir }}/conf.d"
 logstash_package_name: "{{ __logstash_package_name }}"
 logstash_service_name: logstash
-logstash_java_opts:
 logstash_enable_log: true
 logstash_plugins_to_install: []
 logstash_home: "{{ __logstash_home }}"
 logstash_api_enabled: true
 logstash_api_host: 127.0.0.1
 logstash_api_port: 9600
-# example: logstash_java_opts: "-Xmx512m -Xms128m"
+# the Java options obtained from jvm.options in logstash 5.1.1
+logstash_jvm_options:
+  - -Xms256m
+  - -Xmx1g
+  - -XX:+UseParNewGC
+  - -XX:+UseConcMarkSweepGC
+  - -XX:CMSInitiatingOccupancyFraction=75
+  - -XX:+UseCMSInitiatingOccupancyOnly
+  - -XX:+DisableExplicitGC
+  - -Djava.awt.headless=true
+  - -Dfile.encoding=UTF-8
+  - -XX:+HeapDumpOnOutOfMemoryError
 
 logstash_config_default:
       path.config: "{{ logstash_conf_dir }}"

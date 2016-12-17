@@ -36,6 +36,12 @@
   register: register_logstash_yml
   notify: Reload logstash
 
+- name: Create jvm.options
+  template:
+    src: jvm.options.j2
+    dest: "{{ logstash_etc_dir }}/jvm.options"
+  notify: Restart logstash
+
 - name: Create path.logs directory
   file:
     path: "{{ logstash_config_merged['path.logs'] }}"
