@@ -1,3 +1,6 @@
 ---
 __logstash_etc_dir: /etc/logstash
 __logstash_home: /usr/share/logstash
+__logstash_package_name: logstash
+__logstash_user: logstash
+__logstash_group: logstash

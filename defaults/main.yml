@@ -1,13 +1,41 @@
 ---
 # defaults file for ansible-role-logstash
 
+logstash_user: "{{ __logstash_user }}"
+logstash_group: "{{ __logstash_group }}"
+logstash_etc_dir: "{{ __logstash_etc_dir }}"
 logstash_conf_dir: "{{ __logstash_etc_dir }}/conf.d"
+logstash_package_name: "{{ __logstash_package_name }}"
 logstash_service_name: logstash
-logstash_java_opts:
-logstash_enable_log: true
 logstash_plugins_to_install: []
 logstash_home: "{{ __logstash_home }}"
-# example: logstash_java_opts: "-Xmx512m -Xms128m"
+logstash_api_enabled: true
+logstash_api_host: 127.0.0.1
+logstash_api_port: 9600
+# the Java options obtained from jvm.options in logstash 5.1.1
+logstash_jvm_options:
+  - -Xms256m
+  - -Xmx1g
+  - -XX:+UseParNewGC
+  - -XX:+UseConcMarkSweepGC
+  - -XX:CMSInitiatingOccupancyFraction=75
+  - -XX:+UseCMSInitiatingOccupancyOnly
+  - -XX:+DisableExplicitGC
+  - -Djava.awt.headless=true
+  - -Dfile.encoding=UTF-8
+  - -XX:+HeapDumpOnOutOfMemoryError
+
+logstash_config_default:
+      path.config: "{{ logstash_conf_dir }}"
+      path.data: "{% if ansible_os_family == 'FreeBSD' %}/var/db/logstash{% elif ansible_os_family == 'Debian' %}/var/lib/logstash{% endif %}"
+      path.logs: /var/log/logstash
+      # XXX this should not be necessary, but logstash always checks default
+      # path to queue. see https://github.com/elastic/logstash/issues/6387
+      path.queue: "{% if ansible_os_family == 'FreeBSD' %}/var/db/logstash/queue{% elif ansible_os_family == 'Debian' %}/var/lib/logstash/queue{% endif %}"
+      http.host: "{{ logstash_api_host }}"
+      http.port: "{{ logstash_api_port }}"
+
+logstash_config: {}
 
 logstash_inputs:
 logstash_outputs:

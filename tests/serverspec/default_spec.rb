@@ -4,19 +4,44 @@ require 'serverspec'
 logstash_package_name = 'logstash'
 logstash_service_name = 'logstash'
 logstash_config_path  = '/etc/logstash/conf.d'
+logstash_config       = "/etc/logstash/logstash.yml"
 logstash_user_name    = 'logstash'
 logstash_user_group   = 'logstash'
 logstash_home         = '/usr/share/logstash'
-logstash_local_log   = "/var/log/logstash/logstash-plain.log"
+logstash_local_log    = "/var/log/logstash/logstash-plain.log"
+jvm_options           = "/etc/logstash/jvm.options"
 
 # wait for logstash to start listening
 sleep 15
 
 case os[:family]
 when 'freebsd'
+  logstash_package_name = "logstash5"
   logstash_config_path = '/usr/local/etc/logstash/conf.d'
   logstash_home        = '/usr/local/logstash'
-  logstash_local_log   = '/var/log/logstash.log'
+  logstash_config      = "/usr/local/etc/logstash/logstash.yml"
+  jvm_options          = "/usr/local/etc/logstash/jvm.options"
+end
+
+case os[:family]
+when "freebsd"
+  describe file("/dev/fd") do
+    it { should be_mounted }
+    # XXX in lib/specinfra/processor.rb, line 93, sepcinfra 2.66.2 has
+    # linuxism, expecting:
+    #
+    # proc on /proc type proc (rw,noexec,nosuid,nodev)
+    #
+    # but in FeeeBSD, mount(8) returns:
+    #
+    # procfs on /proc (procfs, local)
+    #
+    # it { should be_mounted.with(:type => "fdescfs") }
+  end
+end
+describe file("/proc") do
+  it { should be_mounted }
+  # it { should be_mounted.with(:type => "procfs") }
 end
 
 describe package(logstash_package_name) do
@@ -28,7 +53,6 @@ when 'freebsd'
   describe file('/etc/rc.conf.d/logstash') do
     it { should be_file }
     its(:content) { should match %r{^logstash_config="/usr/local/etc/logstash/conf.d"} }
-    its(:content) { should match /logstash_log=YES/ }
   end
 end
 
@@ -62,4 +86,27 @@ end
 describe command("#{ logstash_home }/bin/logstash-plugin list") do
   its(:exit_status) { should eq 0 }
   its(:stdout) { should match /logstash-input-rss/ }
+end
+
+describe file(logstash_config) do
+  it { should be_file }
+  its(:content_as_yaml) { should include("path.logs" => "/var/log/logstash") }
+  its(:content_as_yaml) { should include("http.host" => "127.0.0.1") }
+  its(:content_as_yaml) { should include("http.port" => 9600) }
+end
+
+describe file(jvm_options) do
+  it { should be_file }
+  # non-defaults
+  its(:content) { should match(/^-Xms257m$/) }
+  # defaults
+  its(:content) { should match(/^-Xmx1g$/) }
+  its(:content) { should match(/^-XX:\+UseParNewGC$/) }
+  its(:content) { should match(/^-XX:\+UseConcMarkSweepGC$/) }
+  its(:content) { should match(/^-XX:CMSInitiatingOccupancyFraction=75$/) }
+  its(:content) { should match(/^-XX:\+UseCMSInitiatingOccupancyOnly$/) }
+  its(:content) { should match(/^-XX:\+DisableExplicitGC$/) }
+  its(:content) { should match(/^-Djava\.awt\.headless=true$/) }
+  its(:content) { should match(/^-Dfile\.encoding=UTF-8$/) }
+  its(:content) { should match(/^-XX:\+HeapDumpOnOutOfMemoryError$/) }
 end

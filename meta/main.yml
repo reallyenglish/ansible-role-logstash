@@ -22,5 +22,5 @@ galaxy_info:
   galaxy_tags:
     - log
     - logging
-#dependencies:
-#  - { role: username.common, some_parameter: 3 }
+dependencies:
+  - { role: reallyenglish.freebsd-repos, when: ansible_os_family == 'FreeBSD' }

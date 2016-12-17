@@ -33,12 +33,13 @@
   when: "not '* shared/accepted-oracle-license-v1-1: true' in register_debconf_show.stdout_lines"
 
 - name: Install Java 8
+  # openjdk8 is not available yet
   apt:
     name: oracle-java8-installer
 
 - name: Install logstash
   apt:
-    name: logstash
+    name: "{{ logstash_package_name }}"
     state: present
 
 # package logstash 5.1.1 installs logstash-plugin with permission 0775

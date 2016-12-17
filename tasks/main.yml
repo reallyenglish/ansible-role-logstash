@@ -7,13 +7,20 @@
 
 - include: "configure-{{ ansible_os_family }}.yml"
 
+- set_fact:
+    logstash_config_merged: "{{ logstash_config_default | combine(logstash_config) }}"
+
 - name: Register installed plugins
   command: "{{ logstash_home }}/bin/logstash-plugin list"
   register: logstash_plugins_list
   changed_when: False
+  become: true
+  become_user: "{{ logstash_user }}"
 
 - name: Install plugins
   command: "{{ logstash_home }}/bin/logstash-plugin install {{ item }}"
+  become: true
+  become_user: "{{ logstash_user }}"
   with_items: "{{ logstash_plugins_to_install }}"
   when: not ( logstash_plugins_list.stdout | search(item) )
 
@@ -22,16 +29,60 @@
     path: "{{ logstash_conf_dir }}"
     state: directory
 
+- name: Create logstash.yml
+  template:
+    src: logstash.yml.j2
+    dest: "{{ logstash_etc_dir }}/logstash.yml"
+  register: register_logstash_yml
+  # XXX you cannot validate here as logstash needs muptiple configuration files
+  # to validate the whole configuration
+  notify: Reload logstash
+
+- name: Create jvm.options
+  template:
+    src: jvm.options.j2
+    dest: "{{ logstash_etc_dir }}/jvm.options"
+  notify: Restart logstash
+
+- name: Create path.logs directory
+  file:
+    path: "{{ logstash_config_merged['path.logs'] }}"
+    state: directory
+    owner: "{{ logstash_user }}"
+    group: "{{ logstash_group }}"
+  when:
+    - "'path.logs' in logstash_config_merged"
+
+- name: Create path.data directory
+  file:
+    path: "{{ logstash_config_merged['path.data'] }}"
+    state: directory
+    owner: "{{ logstash_user }}"
+    group: "{{ logstash_group }}"
+  when:
+    - "'path.data' in logstash_config_merged"
+
 - name: Create logstash configuration files
   template:
     src: "{{ item }}.j2"
     dest: "{{ logstash_conf_dir }}/{{ item }}"
     mode: 0644
+  register: register_config_files
   with_items:
     - input.conf
     - filter.conf
     - output.conf
-  notify: Restart logstash
+  notify: Reload logstash
+
+- name: Validate configuration files
+  command: "{{ logstash_home }}/bin/logstash --config.test_and_exit --path.settings {{ logstash_etc_dir }} --path.config {{ logstash_config_merged['path.config'] }}"
+  # XXX the error message does not show up in stderr when logging to file is
+  # enabled, which is almost always true. you have to dig in to the log file to
+  # see what the error was.
+  become: true
+  become_user: "{{ logstash_user }}"
+  when:
+    - register_logstash_yml.changed or register_config_files.changed
 
 - name: Ensure logstash is running
   service:
@@ -39,10 +90,8 @@
     state: started
     enabled: yes
 
-# TODO
-# * --allow-unsafe-shutdown
-# * install visualvm? https://www.elastic.co/guide/en/logstash/current/pipeline.html
-# * logstash 2.3 (auto-reload)
-# * reload by sending SIGHUP
-# * Managing Throughput Spikes with Message Queueing
-# * Managing plugins
+- name: Wait for logstash to start listening to API requests
+  wait_for:
+    host: "{{ logstash_api_host }}"
+    port: "{{ logstash_api_port }}"
+  when: logstash_api_enabled

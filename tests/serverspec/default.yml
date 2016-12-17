@@ -1,6 +1,7 @@
 - hosts: all
   roles:
     - ansible-role-logstash
+    - { role: reallyenglish.freebsd-repos, when: ansible_os_family == 'FreeBSD' }
   vars:
     logstash_enable_log: true
     logstash_inputs: |
@@ -12,3 +13,20 @@
       elasticsearch {}
     logstash_plugins_to_install:
       - logstash-input-rss
+    logstash_config: {}
+    logstash_jvm_options:
+      - -Xms257m
+      - -Xmx1g
+      - -XX:+UseParNewGC
+      - -XX:+UseConcMarkSweepGC
+      - -XX:CMSInitiatingOccupancyFraction=75
+      - -XX:+UseCMSInitiatingOccupancyOnly
+      - -XX:+DisableExplicitGC
+      - -Djava.awt.headless=true
+      - -Dfile.encoding=UTF-8
+      - -XX:+HeapDumpOnOutOfMemoryError
+
+    freebsd_repos_name: reallyenglish_staging
+    freebsd_repos_url: pkg+http://10.3.build.reallyenglish.com
+    freebsd_repos_priority: 100
+    freebsd_repos_disable_default_repository: false

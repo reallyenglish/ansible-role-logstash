@@ -1,3 +1,6 @@
 ---
 __logstash_etc_dir: /usr/local/etc/logstash
 __logstash_home: /usr/local/logstash
+__logstash_package_name: sysutils/logstash5
+__logstash_user: logstash
+__logstash_group: logstash
