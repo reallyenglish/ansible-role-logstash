@@ -53,7 +53,6 @@ when 'freebsd'
   describe file('/etc/rc.conf.d/logstash') do
     it { should be_file }
     its(:content) { should match %r{^logstash_config="/usr/local/etc/logstash/conf.d"} }
-    its(:content) { should match /logstash_log=YES/ }
   end
 end
 

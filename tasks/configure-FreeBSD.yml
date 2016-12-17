@@ -1,8 +1,6 @@
 ---
 
 - name: Create rc.d flags
-  # XXX remove this after testing as there is not much to configure in this
-  # file
   template:
     src: FreeBSD.rc.d.j2
     dest: /etc/rc.conf.d/logstash
