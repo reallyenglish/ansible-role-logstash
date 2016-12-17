@@ -34,6 +34,8 @@
     src: logstash.yml.j2
     dest: "{{ logstash_etc_dir }}/logstash.yml"
   register: register_logstash_yml
+  # XXX you cannot validate here as logstash needs muptiple configuration files
+  # to validate the whole configuration
   notify: Reload logstash
 
 - name: Create jvm.options

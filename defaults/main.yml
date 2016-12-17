@@ -7,7 +7,6 @@ logstash_etc_dir: "{{ __logstash_etc_dir }}"
 logstash_conf_dir: "{{ __logstash_etc_dir }}/conf.d"
 logstash_package_name: "{{ __logstash_package_name }}"
 logstash_service_name: logstash
-logstash_enable_log: true
 logstash_plugins_to_install: []
 logstash_home: "{{ __logstash_home }}"
 logstash_api_enabled: true

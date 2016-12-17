@@ -33,6 +33,7 @@
   when: "not '* shared/accepted-oracle-license-v1-1: true' in register_debconf_show.stdout_lines"
 
 - name: Install Java 8
+  # openjdk8 is not available yet
   apt:
     name: oracle-java8-installer
 
