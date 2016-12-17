@@ -53,16 +53,34 @@ None
 
 # Example Playbook
 
-    - hosts: servers
-      roles:
-        - role:  ansible-role-logstash
-          logstash_inputs: |
-            syslog {
-                     port => "514"
-                     type => "syslog_input"
-            }
-          logstash_outputs: |
-            elasticsearch {}
+```yaml
+- hosts: all
+  roles:
+    - ansible-role-logstash
+  vars:
+    logstash_enable_log: true
+    logstash_inputs: |
+      tcp {
+        'port' => '5140'
+        'type' => 'syslog'
+      }
+    logstash_outputs: |
+      elasticsearch {}
+    logstash_plugins_to_install:
+      - logstash-input-rss
+    logstash_config: {}
+    logstash_jvm_options:
+      - -Xms257m
+      - -Xmx1g
+      - -XX:+UseParNewGC
+      - -XX:+UseConcMarkSweepGC
+      - -XX:CMSInitiatingOccupancyFraction=75
+      - -XX:+UseCMSInitiatingOccupancyOnly
+      - -XX:+DisableExplicitGC
+      - -Djava.awt.headless=true
+      - -Dfile.encoding=UTF-8
+      - -XX:+HeapDumpOnOutOfMemoryError
+```
 
 # License
 
