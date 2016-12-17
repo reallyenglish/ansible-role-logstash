@@ -2,6 +2,14 @@
 
 Configures logstash.
 
+SSL setup senario is not supported by this role (#10).
+
+## FreeBSD
+
+`sysutils/logstash5` is in the ports tree now, but it has several bugs and will
+not work. The bugs have been fixed in [our
+tree](https://github.com/reallyenglish/freebsd-ports/tree/10_3_re/sysutils/logstash5).
+
 # Requirements
 
 None
