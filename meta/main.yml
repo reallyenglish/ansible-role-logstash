@@ -24,3 +24,4 @@ galaxy_info:
     - logging
 dependencies:
   - { role: reallyenglish.freebsd-repos, when: ansible_os_family == 'FreeBSD' }
+  - { role: reallyenglish.java }

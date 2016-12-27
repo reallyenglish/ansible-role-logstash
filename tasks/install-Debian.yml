@@ -1,5 +1,4 @@
 ---
-
 - name: Install apt-transport-https
   apt:
     name: apt-transport-https
@@ -14,28 +13,6 @@
   apt_repository:
     repo: deb https://artifacts.elastic.co/packages/5.x/apt stable main
     state: present
-
-- name: Add a PPA for Java 8
-  apt_repository:
-    repo: ppa:webupd8team/java
-    state: present
-  # PPA somtimes returns HTTP 503
-  retries: 6
-  delay: 10
-
-- name: See if the license is accepted
-  shell: debconf-show oracle-java8-installer
-  changed_when: false
-  register: register_debconf_show
-
-- name: Set accepted-oracle-license-v1-1 to true
-  shell: echo debconf shared/accepted-oracle-license-v1-1 select true | debconf-set-selections
-  when: "not '* shared/accepted-oracle-license-v1-1: true' in register_debconf_show.stdout_lines"
-
-- name: Install Java 8
-  # openjdk8 is not available yet
-  apt:
-    name: oracle-java8-installer
 
 - name: Install logstash
   apt:
