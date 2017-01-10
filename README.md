@@ -55,6 +55,16 @@ None
 | `__logstash_user` | `logstash` |
 | `__logstash_group` | `logstash` |
 
+## RedHat
+
+| Variable | Default |
+|----------|---------|
+| `__logstash_etc_dir` | `/etc/logstash` |
+| `__logstash_home` | `/usr/share/logstash` |
+| `__logstash_package_name` | `logstash` |
+| `__logstash_user` | `logstash` |
+| `__logstash_group` | `logstash` |
+
 # Dependencies
 
 None
@@ -65,6 +75,8 @@ None
 - hosts: all
   roles:
     - ansible-role-logstash
+    - { role: reallyenglish.freebsd-repos, when: ansible_os_family == 'FreeBSD' }
+    - { role: reallyenglish.redhat-repo, when: ansible_os_family == 'RedHat' }
   vars:
     logstash_enable_log: true
     logstash_inputs: |
@@ -88,6 +100,18 @@ None
       - -Djava.awt.headless=true
       - -Dfile.encoding=UTF-8
       - -XX:+HeapDumpOnOutOfMemoryError
+
+    freebsd_repos_name: reallyenglish_staging
+    freebsd_repos_url: pkg+http://10.3.build.reallyenglish.com
+    freebsd_repos_priority: 100
+    freebsd_repos_disable_default_repository: false
+    apt_repo_to_add: "{% if ansible_distribution == 'Ubuntu' and ansible_distribution_version | version_compare('16.04', '<') %}ppa:webupd8team/java{% endif %}"
+    redhat_repo:
+      logstash-5.x:
+        baseurl: https://artifacts.elastic.co/packages/5.x/yum
+        gpgcheck: yes
+        enabled: yes
+        gpgkey: https://artifacts.elastic.co/GPG-KEY-elasticsearch
 ```
 
 # License

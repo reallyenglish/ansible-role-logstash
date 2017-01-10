@@ -27,11 +27,11 @@ logstash_jvm_options:
 
 logstash_config_default:
       path.config: "{{ logstash_conf_dir }}"
-      path.data: "{% if ansible_os_family == 'FreeBSD' %}/var/db/logstash{% elif ansible_os_family == 'Debian' %}/var/lib/logstash{% endif %}"
+      path.data: "{% if ansible_os_family == 'FreeBSD' %}/var/db/logstash{% elif ansible_os_family == 'Debian' or ansible_os_family == 'RedHat' %}/var/lib/logstash{% endif %}"
       path.logs: /var/log/logstash
       # XXX this should not be necessary, but logstash always checks default
       # path to queue. see https://github.com/elastic/logstash/issues/6387
-      path.queue: "{% if ansible_os_family == 'FreeBSD' %}/var/db/logstash/queue{% elif ansible_os_family == 'Debian' %}/var/lib/logstash/queue{% endif %}"
+      path.queue: "{% if ansible_os_family == 'FreeBSD' %}/var/db/logstash/queue{% elif ansible_os_family == 'Debian' or ansible_os_family == 'RedHat' %}/var/lib/logstash/queue{% endif %}"
       http.host: "{{ logstash_api_host }}"
       http.port: "{{ logstash_api_port }}"
 

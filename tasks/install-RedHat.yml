@@ -1,0 +1,19 @@
+---
+
+- name: Install logstash
+  yum:
+    name: "{{ logstash_package_name }}"
+    state: present
+
+- name: Install java-1.8.0-openjdk-devel for jps
+  # TODO install java-1.8.0-openjdk-devel by default in ansible-role-java and
+  # remove this task
+  yum:
+    name: java-1.8.0-openjdk-devel
+    state: present
+
+# package logstash 5.1.1 installs logstash-plugin with permission 0775
+- name: Make logstash-plugin executable
+  file:
+    path: "{{ logstash_home }}/bin/logstash-plugin"
+    mode: 0755

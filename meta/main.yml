@@ -15,9 +15,9 @@ galaxy_info:
   - name: Ubuntu
     versions:
     - trusty
-#  - name: EL
-#    versions:
-#    - 7
+  - name: EL
+    versions:
+    - 7
 
   galaxy_tags:
     - log
@@ -25,3 +25,4 @@ galaxy_info:
 dependencies:
   - { role: reallyenglish.freebsd-repos, when: ansible_os_family == 'FreeBSD' }
   - { role: reallyenglish.java }
+  - { role: reallyenglish.redhat-repo, when: ansible_os_family == 'RedHat' }
