@@ -67,7 +67,12 @@ None
 
 # Dependencies
 
-None
+```yaml
+dependencies:
+  - { role: reallyenglish.freebsd-repos, when: ansible_os_family == 'FreeBSD' }
+  - { role: reallyenglish.java }
+  - { role: reallyenglish.redhat-repo, when: ansible_os_family == 'RedHat' }
+```
 
 # Example Playbook
 
