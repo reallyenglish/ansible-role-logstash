@@ -12,7 +12,9 @@ tree](https://github.com/reallyenglish/freebsd-ports/tree/10_3_re/sysutils/logst
 
 # Requirements
 
-None
+The role requires `jps` installed and the binary must be in `$PATH`. For
+example, installing JDK is not enough in CentOS; install
+`java-1.8.0-openjdk-devel`.
 
 # Role Variables
 
