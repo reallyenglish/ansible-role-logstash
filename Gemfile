@@ -14,6 +14,4 @@ gem 'kitchen-verifier-shell', '~> 0.2.0'
 gem 'kitchen-verifier-serverspec', '~> 0.3.0'
 gem 'infrataster', '~> 0.3.2', :git => 'https://github.com/trombik/infrataster.git', :branch => 'reallyenglish'
 gem 'serverspec', '~> 2.37.2'
-# gem 'specinfra', '>= 2.63.2' # OpenBSD's `port` is fixed in this version
-# until this PR will merged https://github.com/mizzy/specinfra/pull/601
-gem 'specinfra', :git => 'https://github.com/ochko/specinfra', :branch => 'check_file_is_mounted_freebsd'
+gem 'specinfra', '>= 2.66.6'
