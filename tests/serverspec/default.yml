@@ -34,7 +34,6 @@
       10.3.build:
         url: pkg+http://10.3.build.reallyenglish.com
         enabled: "true"
-        PKG_ENV: "HTTP_PROXY=http_proxy=http://192.168.13.100:8080"
         mirror_type: srv
         signature_type: none
         state: present
