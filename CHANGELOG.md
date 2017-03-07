@@ -1,3 +1,7 @@
+# Release 1.0.2
+
+* 08268e6 [bugfix] invalid regex (#24)
+
 ## Release 1.0.1
 
 * d445445 [bugfix] update to_nice_yaml and default.yml (#22)
