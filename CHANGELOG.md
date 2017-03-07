@@ -1,4 +1,4 @@
-# Release 1.0.2
+## Release 1.0.2
 
 * 08268e6 [bugfix] invalid regex (#24)
 
