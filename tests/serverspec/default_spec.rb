@@ -80,7 +80,7 @@ describe file(logstash_local_log) do
   it { should be_file }
   it { should be_owned_by logstash_user_name }
   it { should be_grouped_into logstash_user_group }
-  it { should be_mode 755 }
+  it { should be_mode 644 }
 end
 
 describe file("#{logstash_home}/bin/logstash-plugin") do
