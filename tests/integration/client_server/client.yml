@@ -1,0 +1,18 @@
+---
+- hosts: client
+  become: yes
+  become_method: sudo
+  environment:
+    http_proxy: "{{ http_proxy | default() }}"
+    https_proxy: "{{ https_proxy | default() }}"
+    no_proxy: "{{ no_proxy | default() }}"
+
+  pre_tasks:
+    - name: Create logstash.input
+      file:
+        path: /home/vagrant/logstash.input
+        owner: vagrant
+        mode: 0644
+        state: touch
+  roles:
+    - ansible-role-logstash
