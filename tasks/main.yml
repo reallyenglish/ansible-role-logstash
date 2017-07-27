@@ -50,6 +50,7 @@
     state: directory
     owner: "{{ logstash_user }}"
     group: "{{ logstash_group }}"
+    mode: 0755
   when:
     - "'path.logs' in logstash_config_merged"
 
