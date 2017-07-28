@@ -1,0 +1,11 @@
+---
+logstash_inputs: |
+  tcp {
+  port => 12345
+  codec => "json"
+  }
+logstash_outputs: |
+  file {
+    path => '/var/log/logstash/output.json'
+    flush_interval => 0
+  }

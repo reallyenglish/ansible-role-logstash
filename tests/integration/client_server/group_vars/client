@@ -1,0 +1,11 @@
+---
+logstash_inputs: |
+  file {
+    path => [ "/home/vagrant/logstash.input" ]
+  }
+logstash_outputs: |
+  tcp {
+    port => 12345
+    host => "192.168.21.200"
+    codec => "json_lines"
+  }

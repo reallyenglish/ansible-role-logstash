@@ -1,0 +1,28 @@
+---
+
+freebsd_repos:
+  FreeBSD:
+      enabled: "false"
+      state: present
+  10.3.build:
+    url: pkg+http://10.3.build.reallyenglish.com
+    enabled: "true"
+    mirror_type: srv
+    signature_type: none
+    state: present
+
+logstash_enable_log: true
+logstash_config:
+  config.debug: true
+  log.level: debug
+logstash_jvm_options:
+  - -Xms129m
+  - -Xmx512m
+  - -XX:+UseParNewGC
+  - -XX:+UseConcMarkSweepGC
+  - -XX:CMSInitiatingOccupancyFraction=75
+  - -XX:+UseCMSInitiatingOccupancyOnly
+  - -XX:+DisableExplicitGC
+  - -Djava.awt.headless=true
+  - -Dfile.encoding=UTF-8
+  - -XX:+HeapDumpOnOutOfMemoryError

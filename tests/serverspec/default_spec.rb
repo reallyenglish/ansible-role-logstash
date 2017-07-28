@@ -1,24 +1,24 @@
-require 'spec_helper'
-require 'serverspec'
+require "spec_helper"
+require "serverspec"
 
-logstash_package_name = 'logstash'
-logstash_service_name = 'logstash'
-logstash_config_path  = '/etc/logstash/conf.d'
+logstash_package_name = "logstash"
+logstash_service_name = "logstash"
+logstash_config_path  = "/etc/logstash/conf.d"
 logstash_config       = "/etc/logstash/logstash.yml"
-logstash_user_name    = 'logstash'
-logstash_user_group   = 'logstash'
-logstash_home         = '/usr/share/logstash'
-logstash_local_log    = "/var/log/logstash/logstash-plain.log"
+logstash_user_name    = "logstash"
+logstash_user_group   = "logstash"
+logstash_home         = "/usr/share/logstash"
+logstash_log_dir      = "/var/log/logstash"
+logstash_local_log    = "#{logstash_log_dir}/logstash-plain.log"
 jvm_options           = "/etc/logstash/jvm.options"
-
 # wait for logstash to start listening
 sleep 15
 
 case os[:family]
-when 'freebsd'
+when "freebsd"
   logstash_package_name = "logstash5"
-  logstash_config_path = '/usr/local/etc/logstash/conf.d'
-  logstash_home        = '/usr/local/logstash'
+  logstash_config_path = "/usr/local/etc/logstash/conf.d"
+  logstash_home        = "/usr/local/logstash"
   logstash_config      = "/usr/local/etc/logstash/logstash.yml"
   jvm_options          = "/usr/local/etc/logstash/jvm.options"
 end
@@ -27,14 +27,14 @@ case os[:family]
 when "freebsd"
   describe file("/dev/fd") do
     it { should be_mounted }
-    it { should be_mounted.with(:type => "fdescfs") }
+    it { should be_mounted.with(type: "fdescfs") }
   end
 end
 describe file("/proc") do
-  let(:fstype) { os[:family] == 'freebsd' ? 'procfs' : 'proc' }
+  let(:fstype) { os[:family] == "freebsd" ? "procfs" : "proc" }
 
   it { should be_mounted }
-  it { should be_mounted.with(:type => fstype) }
+  it { should be_mounted.with(type: fstype) }
 end
 
 describe package(logstash_package_name) do
@@ -42,14 +42,14 @@ describe package(logstash_package_name) do
 end
 
 case os[:family]
-when 'freebsd'
-  describe file('/etc/rc.conf.d/logstash') do
+when "freebsd"
+  describe file("/etc/rc.conf.d/logstash") do
     it { should be_file }
     its(:content) { should match %r{^logstash_config="/usr/local/etc/logstash/conf.d"} }
   end
 end
 
-describe file("#{logstash_config_path}") do
+describe file(logstash_config_path.to_s) do
   it { should be_directory }
 end
 
@@ -64,11 +64,23 @@ end
 
 describe file("#{logstash_config_path}/filter.conf") do
   it { should be_file }
-  its(:content) { should_not match %r{None} }
+  its(:content) { should_not match(/None/) }
+end
+
+describe file(logstash_log_dir) do
+  it { should exist }
+  it { should be_directory }
+  it { should be_owned_by logstash_user_name }
+  it { should be_grouped_into logstash_user_group }
+  it { should be_mode 755 }
 end
 
 describe file(logstash_local_log) do
+  it { should exist }
   it { should be_file }
+  it { should be_owned_by logstash_user_name }
+  it { should be_grouped_into logstash_user_group }
+  it { should be_mode 644 }
 end
 
 describe file("#{logstash_home}/bin/logstash-plugin") do
@@ -76,9 +88,9 @@ describe file("#{logstash_home}/bin/logstash-plugin") do
   it { should be_mode 755 }
 end
 
-describe command("#{ logstash_home }/bin/logstash-plugin list") do
+describe command("#{logstash_home}/bin/logstash-plugin list") do
   its(:exit_status) { should eq 0 }
-  its(:stdout) { should match /logstash-input-rss/ }
+  its(:stdout) { should match(/logstash-input-rss/) }
 end
 
 describe file(logstash_config) do
