@@ -1,3 +1,10 @@
+## Release 1.0.3
+
+* 2445a2c [bugfix] make role soft-depend on supporting roles (#29)
+* 0fd9ca0 [bugfix] remove to_nice_yaml.py (#28)
+* d10f436 [bugfix] add a simple integration test (#27)
+
+
 ## Release 1.0.2
 
 * 08268e6 [bugfix] invalid regex (#24)
