@@ -1,8 +1,12 @@
 - hosts: all
   roles:
+    - role: reallyenglish.apt-repo
+      when: ansible_os_family == 'Debian'
+    - role: reallyenglish.freebsd-repos
+      when: ansible_os_family == 'FreeBSD'
+    - role: reallyenglish.redhat-repo
+      when: ansible_os_family == 'RedHat'
     - ansible-role-logstash
-    - { role: reallyenglish.freebsd-repos, when: ansible_os_family == 'FreeBSD' }
-    - { role: reallyenglish.redhat-repo, when: ansible_os_family == 'RedHat' }
   vars:
     logstash_enable_log: true
     logstash_inputs: |

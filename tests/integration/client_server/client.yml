@@ -15,4 +15,5 @@
         mode: 0644
         state: touch
   roles:
+    - reallyenglish.freebsd-repos
     - ansible-role-logstash

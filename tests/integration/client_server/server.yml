@@ -9,4 +9,5 @@
 
   pre_tasks:
   roles:
+    - reallyenglish.freebsd-repos
     - ansible-role-logstash
