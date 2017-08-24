@@ -23,4 +23,4 @@ galaxy_info:
     - log
     - logging
 dependencies:
-  - { role: reallyenglish.java }
+  - role: reallyenglish.java
