@@ -1,3 +1,7 @@
+## Release 1.0.4
+
+* e87a25f [bugfix] use new format in meta (#31)
+
 ## Release 1.0.3
 
 * 2445a2c [bugfix] make role soft-depend on supporting roles (#29)
