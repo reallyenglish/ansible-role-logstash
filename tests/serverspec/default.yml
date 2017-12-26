@@ -45,7 +45,9 @@
     apt_repo_to_add: "{% if ansible_distribution == 'Ubuntu' and ansible_distribution_version | version_compare('16.04', '<') %}ppa:webupd8team/java{% endif %}"
     redhat_repo:
       logstash-5.x:
-        baseurl: https://artifacts.elastic.co/packages/5.x/yum
+        baseurl:
+          - https://artifacts.elastic.co/packages/5.x/yum
         gpgcheck: yes
         enabled: yes
-        gpgkey: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+        gpgkey:
+          - https://artifacts.elastic.co/GPG-KEY-elasticsearch
